@@ -33,7 +33,7 @@ public class PlayPage extends AppCompatActivity {
     ImageView hinhcd;
 
 
-
+    // CHAO HUNG!!!!
 
 
     @Override
