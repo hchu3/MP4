@@ -1,6 +1,8 @@
 package myapplication.hfad.com.mp4;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -22,7 +26,7 @@ public class PlayPage extends AppCompatActivity {
     SeekBar sk;
     ImageButton play, previous, forward, shuffle, repeat;
     int position = 0;
-    MediaPlayer mp;
+    MediaPlayer mp ;
     MediaPlayer mp1;
     ArrayList<Song> arraySong;
     Animation animation;
@@ -30,18 +34,27 @@ public class PlayPage extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("AAA", "BBB");
         super.onCreate(savedInstanceState);
+        Log.d("AAA", "BBB");
         setContentView(R.layout.activity_play_page);
+        Log.d("AAA", "BBB");
 
         animation = AnimationUtils.loadAnimation(this,R.anim.cd_rotate);
         Log.d("AAA", "BBB");
 
 
-        Choi();
-        Thembaihat();
+        // khoi tao cac nut
+        initialize();
 
+        // them bai hat vao arraySong
+        addSong();
+
+        // khoi tao va chay file cho media player
         khoitaoMediaPlayer();
 
         // Method play
@@ -89,16 +102,16 @@ public class PlayPage extends AppCompatActivity {
 //                    updateTime();
 //                }
 
-                if (!mp.isLooping()){
-                    //play.setImageResource(R.drawable.repeat_pause);
-                    updateTime();
-                }
-
-                //lap
-                if ((mp.isLooping()) ){
-                    play.setImageResource(R.drawable.playblue);
-                    updateTime2();
-                }
+//                if (!mp.isLooping()){
+//                    //play.setImageResource(R.drawable.repeat_pause);
+//                    updateTime();
+//                }
+//
+//                //lap
+//                if ((mp.isLooping()) ){
+//                    play.setImageResource(R.drawable.playblue);
+//                    updateTime2();
+//                }
 
 
 
@@ -108,57 +121,57 @@ public class PlayPage extends AppCompatActivity {
         // Method previous
 
 
-
-        forward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-              position++;
-                if (position > arraySong.size()- 1){
-                    position = 0;
-                }
-
-                if (mp.isPlaying()){
-                    mp.stop();
-                }
-                khoitaoMediaPlayer();
-                mp.start();
-                setTimeTotal();
-                //updateTime();
-                updateTime2();
-
-
-            }
-
-
-        });
-
-
+//
+//        forward.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//
+//              position++;
+//                if (position > arraySong.size()- 1){
+//                    position = 0;
+//                }
+//
+//                if (mp.isPlaying()){
+//                    mp.stop();
+//                }
+//                khoitaoMediaPlayer();
+//                mp.start();
+//                setTimeTotal();
+//                //updateTime();
+//                updateTime2();
+//
+//
+//            }
+//
+//
+//        });
 
 
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                position--;
-                if ( position < 0){
-                        position = arraySong.size() - 1;
-                }
-
-                if (mp.isPlaying()){
-                    mp.stop();
-                }
-                khoitaoMediaPlayer();
-                mp.start();
-                setTimeTotal();
-                //updateTime();
-                updateTime2();
 
 
-            }
-        });
+//        previous.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                position--;
+//                if ( position < 0){
+//                        position = arraySong.size() - 1;
+//                }
+//
+//                if (mp.isPlaying()){
+//                    mp.stop();
+//                }
+//                khoitaoMediaPlayer();
+//                mp.start();
+//                setTimeTotal();
+//                //updateTime();
+//                updateTime2();
+//
+//
+//            }
+//        });
 
 
          repeat.setOnClickListener(new View.OnClickListener() {
@@ -276,22 +289,7 @@ public class PlayPage extends AppCompatActivity {
 
     }
 
-
-
-
-    private void khoitao2(int position){
-        mp = MediaPlayer.create(PlayPage.this, arraySong.get(position).getFile());
-        txtTittle.setText(arraySong.get(position).getSongTittle());
-    }
-
-    private void khoitaoMediaPlayer(){
-        mp = MediaPlayer.create(PlayPage.this, arraySong.get(position).getFile());
-        txtTittle.setText(arraySong.get(position).getSongTittle());
-
-
-    }
-
-    private void Thembaihat() {
+    private void addSong() {
 
         arraySong = new ArrayList<>();
         arraySong.add(new Song("A Whole New World", R.raw.a_whole_new_world));
@@ -300,7 +298,7 @@ public class PlayPage extends AppCompatActivity {
 
     }
 
-    private void Choi() {
+    private void initialize() {
 
         txtTime     = (TextView)findViewById(R.id.textviewTime);
         txtTotal   = (TextView)findViewById(R.id.textviewTotal);
@@ -314,6 +312,41 @@ public class PlayPage extends AppCompatActivity {
         repeat      = (ImageButton)findViewById(R.id.repeat);
         hinhcd = (ImageView)findViewById(R.id.cdDisk);
     }
+
+    private void khoitaoMediaPlayer(){
+             mp = MediaPlayer.create(PlayPage.this, arraySong.get(position).getFile());
+        txtTittle.setText(arraySong.get(position).getSongTittle());
+
+      //  Log.d("R",arraySong.get(position).getFile());
+
+        // MediaPlayer mp = new MediaPlayer();
+
+//        Uri myUri = Uri.fromFile(new File("/home/wild.mp3")); // initialize Uri here
+//
+//        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//        try{
+//         mp.setDataSource(getApplicationContext(), myUri);
+//         mp.prepare();
+//        }
+//        catch (IOException ja){
+//            System.out.println("SQLException: ");
+//        }
+//        mp.start();
+       // txtTittle.setText(arraySong.get(position).getSongTittle());
+
+
+    }
+
+
+
+
+
+
+    private void khoitao2(int position){
+        mp = MediaPlayer.create(PlayPage.this, arraySong.get(position).getFile());
+        txtTittle.setText(arraySong.get(position).getSongTittle());
+    }
+
 
   private void setTimeTotal(){
 

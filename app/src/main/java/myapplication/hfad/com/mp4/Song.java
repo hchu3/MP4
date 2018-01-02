@@ -4,17 +4,20 @@ package myapplication.hfad.com.mp4;
  * Created by han on 7/27/17.
  */
 
+
 public class Song {
 
 
     private String songTittle;
-    private int File;
+    private int fileId ;
 
+    
     public Song(String songTittle, int file) {
         this.songTittle = songTittle;
-        File = file;
+        fileId = file;
     }
 
+    // string songTittle
     public String getSongTittle() {
         return songTittle;
     }
@@ -23,12 +26,13 @@ public class Song {
         this.songTittle = songTittle;
     }
 
+    // int file
     public int getFile() {
-        return File;
+        return fileId ;
     }
 
     public void setFile(int file) {
-        File = file;
+        fileId  = file;
     }
 
 
